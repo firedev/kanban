@@ -1,5 +1,5 @@
 import React from 'react';
-import Note from './Note';
+import Notes from './Notes';
 
 class App extends React.Component {
   render() {
@@ -14,13 +14,7 @@ class App extends React.Component {
     return (
       <div>
         <h1>Notes</h1>
-        <ul>
-          {notes.map((note, i) =>
-            <li key={'note' + i}>
-              <Note value={note.task} />
-            </li>
-          )}
-        </ul>
+        <Notes notes={notes}/>
       </div>
     );
   }
