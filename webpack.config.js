@@ -7,6 +7,9 @@ var ROOT_PATH = path.resolve(__dirname);
 
 var common = {
   entry: path.resolve(ROOT_PATH, 'app/main'),
+  resolve: {
+    extensions: ['', '.js', '.jsx']
+  },
   output: {
     path: path.resolve(ROOT_PATH, 'build'),
     filename: 'bundle.js'
@@ -17,6 +20,11 @@ var common = {
       {
         test: /\.css$/,
         loaders: ['style', 'css']
+      },
+      {
+        test: /\.jsx?$/,
+        loader: 'babel?stage=1',
+        include: path.resolve(ROOT_PATH, 'app')
       }
     ]
   },

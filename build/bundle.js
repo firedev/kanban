@@ -44,6 +44,8 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+
 	var component = __webpack_require__(1);
 	var app = document.createElement('div');
 
@@ -52,17 +54,17 @@
 	document.body.appendChild(app);
 	app.appendChild(component());
 
-
 /***/ },
 /* 1 */
 /***/ function(module, exports) {
 
-	module.exports = function() {
+	'use strict';
+
+	module.exports = function () {
 	  var element = document.createElement('h1');
 	  element.innerHTML = 'Hello world!';
 	  return element;
 	};
-
 
 /***/ },
 /* 2 */
