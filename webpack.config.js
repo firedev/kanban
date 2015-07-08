@@ -7,7 +7,7 @@ var TARGET = process.env.TARGET;
 var ROOT_PATH = path.resolve(__dirname);
 
 var common = {
-  entry: path.resolve(ROOT_PATH, 'app/main'),
+  entry: [path.resolve(ROOT_PATH, 'app/main')],
   resolve: {
     extensions: ['', '.js', '.jsx']
   },
@@ -61,6 +61,15 @@ if(TARGET === 'dev') {
     entry: [
       'webpack-dev-server/client?http://localhost:8080',
       'webpack/hot/dev-server'
-    ]
+    ],
+    module: {
+      loaders: [
+        {
+          test: /\.jsx?$/,
+          loaders: ['react-hot', 'babel?stage=1'],
+          include: path.resolve(ROOT_PATH, 'app')
+        }
+      ]
+    }
   });
 }
