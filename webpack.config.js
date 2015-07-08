@@ -1,4 +1,5 @@
 var path = require('path');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 var merge = require('webpack-merge');
 
 var TARGET = process.env.TARGET;
@@ -18,7 +19,13 @@ var common = {
         loaders: ['style', 'css']
       }
     ]
-  }
+  },
+
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: 'Kanban'
+    })
+  ]
 };
 
 if(TARGET === 'build') {
