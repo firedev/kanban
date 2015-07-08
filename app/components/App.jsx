@@ -2,19 +2,33 @@ import React from 'react';
 import Notes from './Notes';
 
 class App extends React.Component {
-  render() {
-    var notes = [{
-      task: 'Crush'
-    }, {
-      task: 'Kill'
-    }, {
-      task: 'Destroy'
-    }];
+  constructor(props) {
+    super(props);
+    this.state = {
+      notes: [
+        { task: 'Crush' },
+        { task: 'Kill1' },
+        { task: 'Destroy' }
+      ]
+    };
+  }
 
+  addNote() {
+    this.setState({
+     notes: [{ task: 'new' }].concat(this.state.notes)
+    });
+  }
+
+  render() {
     return (
       <div>
         <h1>Notes</h1>
-        <Notes notes={notes}/>
+        <button onClick={ () => this.addNote() }>
+          Add New
+        </button>
+        <Notes notes={ this.state.notes }/>
+        <div>
+        </div>
       </div>
     );
   }
