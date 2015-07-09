@@ -2,6 +2,14 @@ import React from 'react';
 import Note from './Note';
 
 class Notes extends React.Component {
+  constructor(props: {
+    notes: Array;
+    onEdit: Function;
+    onDelete: Function;
+  }) {
+    super(props);
+  }
+
   render() {
     return (
       <ul className="notes">
