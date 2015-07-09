@@ -2,12 +2,15 @@ import React from 'react';
 import Notes from './Notes';
 import NoteActions from '../actions/NoteActions';
 import NoteStore from '../stores/NoteStore';
+import persist from '../decorators/persist';
 import storage from '../libs/storage';
+
+const noteStorageName = noteStorageName;
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    NoteActions.init(storage.get('notes'));
+    NoteActions.init(storage.get(noteStorageName));
     this.state = NoteStore.getState();
     this.storeChanged = this.storeChanged.bind(this);
   }
@@ -21,7 +24,7 @@ class App extends React.Component {
   }
 
   storeChanged(state) {
-    storage.set('notes', state);
+    storage.set(noteStorageName, state);
     this.setState(NoteStore.getState());
   }
 
@@ -55,4 +58,6 @@ class App extends React.Component {
 
 }
 
-export default App;
+export default persist(
+  App, storage, noteStorageName, () => NoteStore.getState()
+);
