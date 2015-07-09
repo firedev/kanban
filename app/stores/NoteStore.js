@@ -1,10 +1,14 @@
 import alt from '../libs/alt';
 import NoteActions from '../actions/NoteActions';
+import storage from '../libs/storage';
 
 class NoteStore {
   constructor() {
     this.bindActions(NoteActions);
-    this.notes = [];
+  }
+
+  init(data) {
+    this.setState(data || { notes: [] });
   }
 
   create(task) {
