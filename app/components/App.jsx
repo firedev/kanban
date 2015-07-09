@@ -1,37 +1,49 @@
 import React from 'react';
 import Notes from './Notes';
+import NoteActions from '../actions/NoteActions';
+import NoteStore from '../stores/NoteStore';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
+    this.storeChanged = this.storeChanged.bind(this);
+    this.state = NoteStore.getState();
+  }
 
-    this.state = {
-      notes: [
-        { task: 'Crush' },
-        { task: 'Kill1' },
-        { task: 'Destroy' }
-      ]
-    };
+  componentDidMount() {
+    NoteStore.listen(this.storeChanged);
+  }
+
+  componentWillUnmount() {
+    NoteStore.unlisten(this.storeChanged);
+  }
+
+  storeChanged(state) {
+    this.setState(state);
   }
 
   render() {
     return (
       <div>
         <h1>Notes</h1>
-        <button onClick={ () => this.addNote() }>
-          Add New
-        </button>
-        <Notes notes={ this.state.notes }
-          onDelete={(i) => this.itemDeleted(i)}
-          onEdit={(i, task) => this.itemEdited(i, task)}/>
+        <button onClick={() => this.addItem()}>+</button>
+        <Notes notes={this.state.notes}
+          onDelete={this.itemDeleted.bind(this)}
+          onEdit={this.itemEdited.bind(this)}/>
       </div>
     );
   }
 
-  addNote() {
-    this.setState({
-     notes: [{ task: 'new' }].concat(this.state.notes)
-    });
+  addItem() {
+    NoteActions.create('New task');
+  }
+
+  itemEdited(id, task) {
+    if(task) {
+      NoteActions.update({id, task});
+    } else {
+      NoteActions.remove(id);
+    }
   }
 
   itemDeleted(i) {
@@ -40,15 +52,6 @@ class App extends React.Component {
     this.setState({ notes: notes });
   }
 
-  itemEdited(i, task) {
-    var notes = this.state.notes;
-    if(!task) {
-      this.itemDeleted(i);
-    } else {
-      notes[i].task = task;
-      this.setState({ notes: notes });
-    }
-  }
 }
 
 export default App;
