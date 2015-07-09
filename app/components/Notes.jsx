@@ -9,7 +9,7 @@ class Notes extends React.Component {
           <li className="note" key={'note' + i}>
             <Note
               value={note.task}
-              onEdit={() => null}
+              onEdit={this.props.onEdit.bind(null, i)}
             />
           </li>
         )}

@@ -14,12 +14,6 @@ class App extends React.Component {
     };
   }
 
-  addNote() {
-    this.setState({
-     notes: [{ task: 'new' }].concat(this.state.notes)
-    });
-  }
-
   render() {
     return (
       <div>
@@ -27,11 +21,26 @@ class App extends React.Component {
         <button onClick={ () => this.addNote() }>
           Add New
         </button>
-        <Notes notes={ this.state.notes }/>
+        <Notes notes={ this.state.notes }
+          onEdit={(i, task) => this.itemEdited(i, task)}/>
         <div>
         </div>
       </div>
     );
+  }
+
+  addNote() {
+    this.setState({
+     notes: [{ task: 'new' }].concat(this.state.notes)
+    });
+  }
+
+  itemEdited(i, task) {
+    var notes = this.state.notes;
+    notes[i].task = task;
+    this.setState({
+      notes: notes
+    });
   }
 }
 
