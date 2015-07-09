@@ -24,8 +24,6 @@ class App extends React.Component {
         <Notes notes={ this.state.notes }
           onDelete={(i) => this.itemDeleted(i)}
           onEdit={(i, task) => this.itemEdited(i, task)}/>
-        <div>
-        </div>
       </div>
     );
   }

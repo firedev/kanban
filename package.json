@@ -6,7 +6,7 @@
   "scripts": {
     "build": "TARGET=build webpack",
     "start": "TARGET=dev webpack-dev-server --devtool eval --progress --colors --hot",
-    "open": "open http://localhost:8080/webpack-dev-server/build/"
+    "open": "open http://localhost:8080/webpack-dev-server"
   },
   "author": "",
   "license": "ISC",
