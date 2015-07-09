@@ -7,7 +7,10 @@ class Notes extends React.Component {
       <ul className="notes">
         {this.props.notes.map((note, i) =>
           <li className="note" key={'note' + i}>
-            <Note value={note.task} />
+            <Note
+              value={note.task}
+              onEdit={() => null}
+            />
           </li>
         )}
       </ul>
