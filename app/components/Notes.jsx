@@ -10,6 +10,7 @@ class Notes extends React.Component {
             <Note
               value={note.task}
               onEdit={this.props.onEdit.bind(null, i)}
+              onDelete={this.props.onDelete.bind(null, i)}
             />
           </li>
         )}

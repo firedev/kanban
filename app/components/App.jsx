@@ -22,6 +22,7 @@ class App extends React.Component {
           Add New
         </button>
         <Notes notes={ this.state.notes }
+          onDelete={(i) => this.itemDeleted(i)}
           onEdit={(i, task) => this.itemEdited(i, task)}/>
         <div>
         </div>
@@ -35,16 +36,20 @@ class App extends React.Component {
     });
   }
 
+  itemDeleted(i) {
+    var notes = this.state.notes;
+    notes = notes.slice(0, i).concat(notes.slice(i + 1));
+    this.setState({ notes: notes });
+  }
+
   itemEdited(i, task) {
     var notes = this.state.notes;
-    if(task) {
-      notes[i].task = task;
+    if(!task) {
+      this.itemDeleted(i);
     } else {
-      notes = notes.slice(0, i).concat(notes.slice(i + 1));
+      notes[i].task = task;
+      this.setState({ notes: notes });
     }
-    this.setState({
-      notes: notes
-    });
   }
 }
 

@@ -21,7 +21,12 @@ class Note extends React.Component {
             onBlur={(e) => this.finishEdit(e)}
             onKeyPress={(e) => this.checkEnter(e)}
           />
-        : <div onClick={() => this.edit()}>{value}</div>
+        :
+          <div>
+            <span onClick={() => this.edit()}>
+              {value}
+            </span>
+            <button onClick={this.props.onDelete}>&times;</button></div>
       }</div>
     );
   }
