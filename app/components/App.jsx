@@ -6,13 +6,17 @@ import persist from '../decorators/persist';
 import connect from '../decorators/connect';
 import storage from '../libs/storage';
 
-const noteStorageName = noteStorageName;
+const noteStorageName = 'notes';
 
-class App extends React.Component {
+@persist(storage, noteStorageName, () => NoteStore.getState())
+@connect(NoteStore)
+
+export default class App extends React.Component {
   constructor(props: {
     notes: Array;
   }) {
     super(props);
+
     NoteActions.init(storage.get(noteStorageName));
   }
 
@@ -44,12 +48,4 @@ class App extends React.Component {
   itemDeleted(id) {
     NoteActions.remove(id);
   }
-
 }
-
-export default persist(
-  connect(App, NoteStore),
-  storage,
-  noteStorageName,
-  () => NoteStore.getState()
-);
