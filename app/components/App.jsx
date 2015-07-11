@@ -13,6 +13,7 @@ class App extends React.Component {
     notes: Array;
   }) {
     super(props);
+    NoteActions.init(storage.get(noteStorageName));
   }
 
   render() {
@@ -50,6 +51,5 @@ export default persist(
   connect(App, NoteStore),
   storage,
   noteStorageName,
-  () => NoteStore.getState(),
-  NoteActions.init()
+  () => NoteStore.getState()
 );

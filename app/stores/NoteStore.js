@@ -5,6 +5,7 @@ import storage from '../libs/storage';
 class NoteStore {
   constructor() {
     this.bindActions(NoteActions);
+    this.notes = [];
   }
 
   init(data) {
