@@ -1,22 +1,18 @@
+import AltContainer from 'alt/AltContainer';
 import React from 'react';
 import Notes from './Notes';
 import NoteActions from '../actions/NoteActions';
 import NoteStore from '../stores/NoteStore';
 import persist from '../decorators/persist';
-import connect from '../decorators/connect';
 import storage from '../libs/storage';
 
 const noteStorageName = 'notes';
 
 @persist(storage, noteStorageName, () => NoteStore.getState())
-@connect(NoteStore)
 
 export default class App extends React.Component {
-  constructor(props: {
-    notes: Array;
-  }) {
+  constructor(props) {
     super(props);
-
     NoteActions.init(storage.get(noteStorageName));
   }
 
@@ -26,9 +22,13 @@ export default class App extends React.Component {
       <div>
         <h1>Notes</h1>
         <button onClick={this.addItem.bind(this)}>+</button>
-        <Notes notes={notes}
-          onDelete={this.itemDeleted.bind(this)}
-          onEdit={this.itemEdited.bind(this)}/>
+        <AltContainer stores={[NoteStore]}
+          inject={{notes: () => NoteStore.getState().notes || [] }}
+        >
+          <Notes notes={notes}
+            onDelete={this.itemDeleted.bind(this)}
+            onEdit={this.itemEdited.bind(this)}/>
+        </AltContainer>
       </div>
     );
   }
