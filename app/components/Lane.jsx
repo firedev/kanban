@@ -3,9 +3,11 @@ import React from 'react';
 
 import alt from '../libs/alt';
 import {getInitialData} from '../libs/storage';
+import Editable from './Editable.jsx';
 import Notes from './Notes';
 import createNoteActions from '../actions/NoteActions';
 import NoteStore from '../stores/NoteStore';
+import LaneActions from '../actions/LaneActions';
 
 export default class Lane extends React.Component {
   constructor(props: {
@@ -26,7 +28,11 @@ export default class Lane extends React.Component {
     return (
       <div {...props}>
         <div className='lane-header'>
-          <div className='lane-name'>{name}</div>
+          <Editable
+            className='lane-name'
+            value={name}
+            onEdit={this.edited.bind(null, LaneActions, 'name', this.props.i)}
+          />
           <div className='lane-add-note'>
             <button onClick={() => this.addNote()}>+</button>
           </div>
@@ -37,7 +43,7 @@ export default class Lane extends React.Component {
             items: () => this.store.getState().notes || []
           }}
         >
-          <Notes onEdit={this.noteEdited.bind(this)} />
+          <Notes onEdit={this.edited.bind(null, this.actions, 'task')} />
         </AltContainer>
       </div>
     );
@@ -52,6 +58,14 @@ export default class Lane extends React.Component {
       this.actions.update({id, task});
     } else {
       this.actions.remove(id);
+    }
+  }
+
+  edited(actions, field, id, name) {
+    if(name) {
+      actions.update({id, [field]: name});
+    } else {
+      actions.remove(id);
     }
   }
 }
