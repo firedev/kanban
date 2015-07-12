@@ -1,8 +1,10 @@
 import AltContainer from 'alt/AltContainer';
 import React from 'react';
 
+import alt from '../libs/alt';
+import {getInitialData} from '../libs/storage';
 import Notes from './Notes';
-import NoteActions from '../actions/NoteActions';
+import createNoteActions from '../actions/NoteActions';
 import NoteStore from '../stores/NoteStore';
 
 export default class Lane extends React.Component {
@@ -11,7 +13,11 @@ export default class Lane extends React.Component {
     i: number;
   }) {
     super(props);
-    NoteActions.init();
+
+    this.actions = createNoteActions(alt);
+    const storeName = 'NoteStore-' + this.props.i;
+    this.store = alt.createStore(NoteStore, storeName, this.actions);
+    this.actions.init(getInitialData(storeName));
   }
 
   render() {
@@ -26,26 +32,26 @@ export default class Lane extends React.Component {
           </div>
         </div>
         <AltContainer
-          stores={[NoteStore]}
+          stores={[this.store]}
           inject={{
-            items: () => NoteStore.getState().notes || []
+            items: () => this.store.getState().notes || []
           }}
         >
-          <Notes onEdit={this.noteEdited} />
+          <Notes onEdit={this.noteEdited.bind(this)} />
         </AltContainer>
       </div>
     );
   }
 
   addNote() {
-    NoteActions.create('New note');
+    this.actions.create('New note');
   }
 
   noteEdited(id, task) {
     if(task) {
-      NoteActions.update({id, task});
+      this.actions.update({id, task});
     } else {
-      NoteActions.remove(id);
+      this.actions.remove(id);
     }
   }
 }

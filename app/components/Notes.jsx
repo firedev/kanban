@@ -7,7 +7,6 @@ class Notes extends React.Component {
     onEdit: Function;
   }) {
     super(props);
-    console.log(props);
   }
 
   render() {
