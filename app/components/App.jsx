@@ -1,51 +1,38 @@
+import alt from '../libs/alt';
 import AltContainer from 'alt/AltContainer';
 import React from 'react';
-import Notes from './Notes';
-import NoteActions from '../actions/NoteActions';
-import NoteStore from '../stores/NoteStore';
+
+import Lanes from './Lanes';
+import LaneActions from '../actions/LaneActions';
+import LaneStore from '../stores/LaneStore';
+
 import persist from '../decorators/persist';
-import storage from '../libs/storage';
+import {storage, storageName, getInitialData} from '../libs/storage';
 
-const noteStorageName = 'notes';
-
-@persist(storage, noteStorageName, () => NoteStore.getState())
-
+@persist(storage, storageName, () => JSON.parse(alt.takeSnapShot()))
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    NoteActions.init(storage.get(noteStorageName));
+    LaneActions.init(getInitialData('LaneStore'));
   }
 
   render() {
-    var notes = this.props.notes;
     return (
       <div>
-        <h1>Notes</h1>
-        <button onClick={this.addItem.bind(this)}>+</button>
-        <AltContainer stores={[NoteStore]}
-          inject={{notes: () => NoteStore.getState().notes || [] }}
+        <button onClick={this.addLane}>+</button>
+        <AltContainer
+          stores={[LaneStore]}
+          inject={{
+            items: () => LaneStore.getState().lanes || []
+          }}
         >
-          <Notes notes={notes}
-            onDelete={this.itemDeleted.bind(this)}
-            onEdit={this.itemEdited.bind(this)}/>
+          <Lanes />
         </AltContainer>
       </div>
     );
   }
 
-  addItem() {
-    NoteActions.create('New task');
-  }
-
-  itemEdited(id, task) {
-    if(task) {
-      NoteActions.update({id, task});
-    } else {
-      NoteActions.remove(id);
-    }
-  }
-
-  itemDeleted(id) {
-    NoteActions.remove(id);
+  addLane() {
+    LaneActions.create('New lane');
   }
 }
