@@ -3,7 +3,7 @@ import React from 'react';
 
 import alt from '../libs/alt';
 import {getInitialData} from '../libs/storage';
-import Editable from './Editable.jsx';
+import Editable from './Editable';
 import Notes from './Notes';
 import createNoteActions from '../actions/NoteActions';
 import NoteStore from '../stores/NoteStore';
@@ -17,22 +17,19 @@ export default class Lane extends React.Component {
     super(props);
 
     this.actions = createNoteActions(alt);
+
     const storeName = 'NoteStore-' + this.props.i;
     this.store = alt.createStore(NoteStore, storeName, this.actions);
     this.actions.init(getInitialData(storeName));
   }
-
   render() {
-    const { i, name, ...props } = this.props;
+    const {i, name, ...props} = this.props;
 
     return (
       <div {...props}>
         <div className='lane-header'>
-          <Editable
-            className='lane-name'
-            value={name}
-            onEdit={this.edited.bind(null, LaneActions, 'name', this.props.i)}
-          />
+          <Editable className='lane-name' value={name}
+            onEdit={this.edited.bind(null, LaneActions, 'name', this.props.i)} />
           <div className='lane-add-note'>
             <button onClick={() => this.addNote()}>+</button>
           </div>
@@ -48,23 +45,14 @@ export default class Lane extends React.Component {
       </div>
     );
   }
-
   addNote() {
     this.actions.create('New note');
   }
-
-  noteEdited(id, task) {
-    if(task) {
-      this.actions.update({id, task});
-    } else {
-      this.actions.remove(id);
+  edited(actions, field, id, value) {
+    if(value) {
+      actions.update({id, [field]: value});
     }
-  }
-
-  edited(actions, field, id, name) {
-    if(name) {
-      actions.update({id, [field]: name});
-    } else {
+    else {
       actions.remove(id);
     }
   }
