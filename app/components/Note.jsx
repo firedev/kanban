@@ -4,7 +4,6 @@ class Note extends React.Component {
   constructor(props: {
     value: string;
     onEdit: Function;
-    onDelete: Function;
   }) {
     super(props);
     this.state = {
@@ -17,8 +16,8 @@ class Note extends React.Component {
     var edited = this.state.edited;
 
     return (
-      <div {...props}>{
-        edited
+      <div {...props}>
+        {edited
         ? <input autoFocus
             type='text'
             defaultValue={value}
@@ -30,8 +29,9 @@ class Note extends React.Component {
             <span onClick={() => this.edit()}>
               {value}
             </span>
-            <button onClick={this.props.onDelete}>&times;</button></div>
-      }</div>
+          </div>
+        }
+      </div>
     );
   }
 

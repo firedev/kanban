@@ -9,7 +9,7 @@ import LaneStore from '../stores/LaneStore';
 import persist from '../decorators/persist';
 import {storage, storageName, getInitialData} from '../libs/storage';
 
-@persist(storage, storageName, () => JSON.parse(alt.takeSnapShot()))
+@persist(storage, storageName, () => JSON.parse(alt.takeSnapshot()))
 export default class App extends React.Component {
   constructor(props) {
     super(props);

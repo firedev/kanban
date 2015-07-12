@@ -3,22 +3,21 @@ import Note from './Note';
 
 class Notes extends React.Component {
   constructor(props: {
-    notes: Array;
+    items: Array;
     onEdit: Function;
-    onDelete: Function;
   }) {
     super(props);
+    console.log(props);
   }
 
   render() {
     return (
       <ul className="notes">
-        {this.props.notes.map((note, i) =>
+        {this.props.items.map((note, i) =>
           <li className="note" key={'note' + i}>
             <Note
               value={note.task}
               onEdit={this.props.onEdit.bind(null, i)}
-              onDelete={this.props.onDelete.bind(null, i)}
             />
           </li>
         )}
